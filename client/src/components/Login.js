@@ -1,6 +1,5 @@
-import { axios } from "axios";
+import axios from "axios";
 import React, { useState } from "react";
-
 const Login = ({ history }) => {
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
@@ -8,38 +7,38 @@ const Login = ({ history }) => {
   const handleChange = e => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-  const handelSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
     axios
       .post("http://localhost:5000/api/login", user)
       .then(rez => {
-        console.log("login", rez);
+        console.log("token test:", rez);
         localStorage.setItem("token", rez.data.payload);
         history.push("/protected");
       })
-      .catch(errrr => console.log(errrr.response));
+      .catch(err => console.error(err.response));
   };
   return (
     <>
-      <h1>Welcome to the Bubba Sparks Bubble App!</h1>
-      <h3>Please Login</h3>
+      <h1 className="title">Welcome to the Bubba Sparks Bubble App!</h1>
+      <br />
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <input
+          type="text"
           name="username"
           placeholder="username"
-          value={user.username}
           onChange={handleChange}
-          type="text"
+          value={user.username}
         />
         <input
+          type="password"
           name="password"
           placeholder="password"
-          value={user.password}
           onChange={handleChange}
-          type="password"
+          value={user.password}
         />
-        <button type="submit">Get my Bubble On</button>
+        <button type="submit">Get Your Bubble On</button>
       </form>
     </>
   );

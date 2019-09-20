@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import axios from "axios";
-
+import { axize } from "../utils/axize";
 const initialColor = {
   color: "",
   code: { hex: "" }
 };
 
 const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
+  console.log("Colors", colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
@@ -21,10 +20,32 @@ const ColorList = ({ colors, updateColors }) => {
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
+    axize()
+      .put(`http://localhost:5000/api/colors/${colorToEdit.id}`, colorToEdit)
+      .then(rez => {
+        console.log("Edit Color", rez);
+        updateColors(
+          colors.map(color => {
+            if (color.id === rez.data.id) {
+              return rez.data;
+            } else {
+              return color;
+            }
+          })
+        );
+      })
+      .catch(errs => console.log(errs.response));
   };
 
   const deleteColor = color => {
     // make a delete request to delete this color
+    axize()
+      .delete(`http://localhost:5000/api/color/${color.id}`)
+      .then(rez => {
+        console.log("Delete Color", rez);
+        updateColors(color.filter(color => color.id !== rez.data));
+      })
+      .catch(errs => console.log(errs.response));
   };
 
   return (

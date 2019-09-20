@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import BubblePage from "./components/BubblePage";
 import Login from "./components/Login";
 import "./styles.scss";
-import ProtectedRoute from "./utils/ProtectedRoute";
+import PrivateRoute from "./utils/PrivateRoute";
 
 function App() {
   const [colorList, setColorList] = useState([]);
@@ -11,7 +11,7 @@ function App() {
     <Router>
       <div className="App">
         <Route exact path="/" component={Login} />
-        <ProtectedRoute exact path="/protected" component={BubblePage} />
+        <PrivateRoute exact path="/protected" component={BubblePage} />
         {/* 
           Build a PrivateRoute component that will 
           display BubblePage when you're authenticated 
